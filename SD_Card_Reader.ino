@@ -29,16 +29,10 @@ void setup() {
     
     digitalWrite(CS, LOW);
     
-    /*frame_commander.send_data(CMD0, 8);*/
-    /*frame_commander.send_data(0x00000000, 32);*/
-    /*frame_commander.send_data(CRC, 8);*/
     frame_commander.send_command_frame();
-   
-    for (int i = 0; i < 72; i++) {
-        Serial.print(digitalRead(MISO));
-        clock_manager.send_bit(1);
-    }
-    clock_manager.CLOCK_TIME = FAST_CLOCK;
+    frame_commander.recieve_data(); 
+
+    Serial.print(frame_commander.recieved_data, BIN);
 }
 
 void loop(void) {}

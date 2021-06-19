@@ -25,6 +25,31 @@ void Frame_Commander::send_data(unsigned char data, int n) {
     }
 }
 
+void Frame_Commander::recieve_data() {
+    int current_bit;
+    int expected_bit_count;
+    switch (r_type) {
+        case 1:
+            expected_bit_count = 8;
+            break;
+    }
+
+    recieved_data = 0;
+    for (int i = 0; i < 72; i++) {
+        clock_manager.send_bit(1);
+        current_bit = digitalRead(MISO);
+        if (current_bit == 0) {
+             for (int j = expected_bit_count - 2; j >= 0; j--) {
+                clock_manager.send_bit(1);
+                current_bit = digitalRead(MISO);        
+                recieved_data += current_bit * pow(2.0, j);
+                
+             }
+             break;
+        }
+    }
+}
+
 void Frame_Commander::send_command_frame() {
     switch (r_type) {
         case 1:
